@@ -9,6 +9,8 @@ const CollectionItem = () => import(/* webpackChunkName:'collection' */ '@/compo
 // const ViewModel = () => import('@/components/rmrk/Gallery/ViewModel.vue')
 const SimpleMint = () => import(/* webpackChunkName:'create' */ '@/components/rmrk/Create/SimpleMint.vue')
 
+const PermaMint = () => import(/* webpackChunkName:'permafrost' */ '@/components/rmrk/Create/PermaMint.vue')
+
 export default [
   {
     path: '/rmrk/create',
@@ -59,5 +61,10 @@ export default [
     path: '/rmrk/mint',
     name: 'simpleMint',
     component: SimpleMint
+  },
+  {
+    path: '/permafrost/create',
+    name: 'permafrost',
+    component: PermaMint
   },
 ];

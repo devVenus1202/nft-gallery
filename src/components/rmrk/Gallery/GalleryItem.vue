@@ -21,12 +21,12 @@
                 <div class="image-preview has-text-centered" :class="{fullscreen: isFullScreenView}">
                   <b-image
                     v-if="!isLoading && imageVisible && !meta.animation_url"
-                    :src="meta.image || '/koda300x300.svg'"
-                    :src-fallback="'/koda300x300.svg'"
+                    :src="meta.image || '/placeholder.svg'"
+                    src-fallback="/placeholder.svg'"
                     alt="KodaDot NFT minted multimedia"
                     ratio="1by1"
                   ></b-image>
-                  <img class="fullscreen-image" :src="meta.image || '/koda300x300.svg'" alt="KodaDot NFT minted multimedia">
+                  <img class="fullscreen-image" :src="meta.image || '/placeholder.svg'" alt="KodaDot NFT minted multimedia">
                   <b-skeleton height="524px" size="is-large" :active="isLoading"></b-skeleton>
                   <MediaResolver v-if="meta.animation_url" :class="{ withPicture: imageVisible }" :src="meta.animation_url" :mimeType="mimeType" />
                 </div>
@@ -84,15 +84,17 @@
                   <div class="content">
                     <p class="subtitle">
                       <Auth />
-                      <AvailableActions
-                      ref="actions"
-                      :accountId="accountId"
-                      :currentOwnerId="nft.currentOwner"
-                      :price="nft.price"
-                      :nftId="nft.id"
-                      :ipfsHashes="[nft.image, nft.animation_url, nft.metadata]"
-                      @change="handleAction"
-                      />
+                      <IndexerGuard showMessage>
+                        <AvailableActions
+                        ref="actions"
+                        :accountId="accountId"
+                        :currentOwnerId="nft.currentOwner"
+                        :price="nft.price"
+                        :nftId="nft.id"
+                        :ipfsHashes="[nft.image, nft.animation_url, nft.metadata]"
+                        @change="handleAction"
+                        />
+                      </IndexerGuard>
                     </p>
                   </div>
                 </div>
@@ -119,7 +121,7 @@ import { Component, Vue } from 'vue-property-decorator';
 // import MarkdownItVueLight from 'markdown-it-vue';
 import 'markdown-it-vue/dist/markdown-it-vue-light.css'
 import { NFT, NFTMetadata, Emote } from '../service/scheme';
-import { sanitizeIpfsUrl, resolveMedia } from '../utils';
+import { sanitizeIpfsUrl, resolveMedia, isIpfsUrl, sanitizeArweaveUrl, getSanitizer } from '../utils';
 import { emptyObject } from '@/utils/empty';
 
 import AvailableActions from './AvailableActions.vue';
@@ -168,7 +170,8 @@ import { exist } from './Search/exist';
     Appreciation: () => import('./Appreciation.vue'),
     MediaResolver: () => import('../Media/MediaResolver.vue'),
     // PackSaver: () => import('../Pack/PackSaver.vue'),
-    BaseCommentSection: () => import('@/components/subsocial/BaseCommentSection.vue')
+    BaseCommentSection: () => import('@/components/subsocial/BaseCommentSection.vue'),
+    IndexerGuard: () => import('@/components/shared/wrapper/IndexerGuard.vue')
   }
 })
 export default class GalleryItem extends Vue {
@@ -232,10 +235,14 @@ export default class GalleryItem extends Vue {
 
     if (this.nft['metadata'] && !this.meta['image']) {
       const m = await get(this.nft.metadata)
-      const meta = m ? m : await fetchNFTMetadata(this.nft)
+
+      const meta = m ? m : await fetchNFTMetadata(this.nft, getSanitizer(this.nft.metadata, undefined, 'permafrost'));
+      console.log(meta);
+
+      const imageSanitizer = getSanitizer(meta.image);
       this.meta = {
         ...meta,
-        image: sanitizeIpfsUrl(meta.image || ''),
+        image: imageSanitizer(meta.image),
         animation_url: sanitizeIpfsUrl(meta.animation_url || '', 'pinata')
       }
 
@@ -298,7 +305,7 @@ export default class GalleryItem extends Vue {
   }
 
   protected handleUnlist() {
-    //call unlist function from the AvailableActions component
+    // call unlist function from the AvailableActions component
     (this.$refs.actions as AvailableActions).unlistNft();
   }
 
@@ -462,11 +469,8 @@ hr.comment-divider {
     }
 
     &-footer {
-      border-radius: none;
-      border-top: none;
-
-      &-item:not(:last-child){
-        border-right-color: $primary;
+      &-item{
+         padding: .75rem!important;
       }
     }
   }

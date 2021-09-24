@@ -210,7 +210,8 @@
     "pinMeta": "Pinning Metadata",
     "constructTx": "Constructing transaction",
     "sign": "Waiting for response from singer",
-    "ipfs": "Uploading data to IPFS"
+    "ipfs": "Uploading data to IPFS",
+    "arweave": "Storing data via PermaFrost"
   },
   "Spotlight": "Spotlight",
   "Simple": "Simple",
@@ -263,6 +264,7 @@
   },
   "general": {
     "balance": "Balance",
-    "submit": "Submit"
+    "submit": "Submit",
+    "indexerReadOnly": "App is in read only mode, try reload app or visit Discord"
   }
 }

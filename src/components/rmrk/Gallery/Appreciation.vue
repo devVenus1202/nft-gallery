@@ -1,18 +1,20 @@
 <template>
-  <div class="nft-appreciation__main mb-4 is-flex">
+  <div class="nft-appreciation__main is-flex">
     <Loader v-model="isLoading" :status="status" />
-    <b-button
-      v-if="accountId"
-      class="nft-appreciation__button"
-      icon-left="heart"
-      @click="showDialog = !showDialog"
-    />
-    <VEmojiPicker
-      v-show="showDialog"
-      labelSearch="Search your emote"
-      @select="onSelectEmoji"
-      class="emote-picker"
-    />
+    <IndexerGuard>
+      <b-button
+        v-if="accountId"
+        class="nft-appreciation__button"
+        icon-left="heart"
+        @click="showDialog = !showDialog"
+      />
+      <VEmojiPicker
+        v-show="showDialog"
+        labelSearch="Search your emote"
+        @select="onSelectEmoji"
+        class="emote-picker"
+      />
+    </IndexerGuard>
     <EmotionList class="emote-list" :emotions="emotions" />
   </div>
 </template>
@@ -35,7 +37,8 @@ import { Emote } from '../service/scheme';
   components: {
     EmotionList,
     VEmojiPicker,
-    Loader: () => import('@/components/shared/Loader.vue')
+    Loader: () => import('@/components/shared/Loader.vue'),
+    IndexerGuard: () => import('@/components/shared/wrapper/IndexerGuard.vue')
   }
 })
 export default class Appreciation extends Mixins(RmrkVersionMixin) {
@@ -159,10 +162,6 @@ export default class Appreciation extends Mixins(RmrkVersionMixin) {
   --ep-color-active: #db2980 !important;
   border-width: $button-border-width !important;
   border-radius: 0 !important;
-}
-
-.nft-appreciation__main {
-  min-height: 40px;
 }
 
 .nft-appreciation__column {

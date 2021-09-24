@@ -19,6 +19,7 @@ const Contact = () => import(/* webpackChunkName:'contact' */ '@/components/land
 const Partnership = () => import(/* webpackChunkName:'partnership' */ '@/components/landing/Partnership.vue');
 const Tutorials = () => import(/* webpackChunkName:'tutorials' */ '@/components/landing/Tutorials.vue');
 const FourZeroFour = () => import(/* webpackChunkName:'404' */ '@/components/FourZeroFour.vue')
+const Error = () => import(/* webpackChunkName:'500' */ '@/components/Error.vue')
 
 export default new Router({
   mode: 'history',
@@ -89,6 +90,19 @@ export default new Router({
       beforeEnter() {
         window.location.href = 'https://tally.so/r/mVP06w'
       }
+    },
+    {
+      path: '/permafrost',
+      name: 'permafrost',
+      component: {},
+      beforeEnter(to, from, next) {
+        window.location.href = 'https://discord.gg/88da2MEfU9'
+      }
+    },
+    {
+      path: '/error',
+      name: 'error',
+      component: Error,
     },
 		{
 			path: '*',
