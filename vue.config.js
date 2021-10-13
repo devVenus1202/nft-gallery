@@ -27,6 +27,17 @@ module.exports = {
     }
   },
 
+  css: {
+    loaderOptions: {
+      sass: {
+        additionalData: `
+          $COLOR_PRIMARY: ${process.env.COLOR_PRIMARY || '#db2980'};
+          $COLOR_LINK: ${process.env.COLOR_LINK || 'lightpink'};
+        `
+      }
+    }
+  },
+
   chainWebpack: config => {
     // ...other chains
     config.module // fixes https://github.com/graphql/graphql-js/issues/1272

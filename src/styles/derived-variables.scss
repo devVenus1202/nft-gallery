@@ -1,6 +1,10 @@
 @import "initial-variables";
 
-$primary: #db2980;
+// $primary: #db2980;
+$primary: $COLOR_PRIMARY;
+$primary-link: $COLOR_LINK;
+// $primary: #00BB7F;
+// $primary-link: lightgreen;
 
 // $info: $cyan;
 // $success: $green;
