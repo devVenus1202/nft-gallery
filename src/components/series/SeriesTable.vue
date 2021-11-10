@@ -232,13 +232,6 @@
       </b-table-column>
 
       <b-table-column
-        field="rank"
-        :label="$t('spotlight.score')"
-        v-slot="props"
-        sortable
-        numeric
-        cell-class="is-vcentered"
-      >
         <template v-if="!isLoading">{{
           Math.ceil(props.row.rank)
         }}</template>
