@@ -227,7 +227,7 @@
         numeric
         cell-class="is-vcentered"
       >
-        <template v-if="!isLoading">{{ props.row.buys }}</template>
+        <template v-if="!isLoading">{{ props.row.totalBuy }}</template>
         <b-skeleton :active="isLoading"> </b-skeleton>
       </b-table-column>
 

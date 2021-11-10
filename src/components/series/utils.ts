@@ -30,7 +30,7 @@ export const nftFn = (a: any): RowSeries => {
 
   const buyEvents = collectionNfts.map(onlyEvents).map(pairListBuyEvent).flat()
   const volume =  Number(getVolume(buyEvents))
-  const buys = buyEvents.length
+  const totalBuy = buyEvents.length
   const dailyVolume = Number(getVolume(buyEvents.filter(after(yesterdayDate))))
   const weeklyVolume = Number(getVolume(buyEvents.filter(after(lastweekDate))))
   const monthlyVolume = Number(getVolume(buyEvents.filter(after(lastmonthDate))))
@@ -44,8 +44,8 @@ export const nftFn = (a: any): RowSeries => {
     image: '', // NOPE
     metadata: a.metadata,
     volume,
-    buys,
     total,
+    totalBuy,
     sold,
     unique,
     uniqueCollectors,

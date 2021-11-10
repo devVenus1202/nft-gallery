@@ -23,7 +23,7 @@ export type RowSeries = {
   metadata: string;
   sold: number;
   total: number;
-  buys: number;
+  totalBuy: number;
   volume: VolumeType;
   dailyVolume: VolumeType;
   weeklyVolume: VolumeType;
